@@ -3,8 +3,6 @@
 class Tf_news_c extends CI_Controller {
 	function newsList(){
 		$data['news']=$this->selectAll();
-		//var_dump($news);
-		//$news['aaa']="hello";
 		$this->load->view('tf_news_list.php',$data);	
 	}
 	function insertView(){
@@ -14,20 +12,22 @@ class Tf_news_c extends CI_Controller {
 		$data['new']=$this->selectById($_GET['id']);
 		$this->load->view('tf_news_updateView.php',$data);
 	}
-	//--
 	function insert(){
 		$this->load->model('tf_news_m');	
 		$arr=array('title'=>$_POST['title'],'content'=>$_POST['content']);
 		$this->tf_news_m->news_insert($arr);
+		$this->newsList();//load newsList
 	}
 	function update(){
 		$this->load->model('tf_news_m');
 		$arr=array('title'=>$_POST['title'],'content'=>$_POST['content']);
 		$this->tf_news_m->news_update($_POST['id'],$arr);
+		$this->newsList();//load newsList
 	}
 	function del(){
 		$this->load->model('tf_news_m');
-		$this->tf_news_m->news_del($_GET['id']);	
+		$this->tf_news_m->news_del($_GET['id']);
+		$this->newsList();//load newsList	
 	}
 	function selectById($id){
 		$this->load->model('tf_news_m');
@@ -37,7 +37,6 @@ class Tf_news_c extends CI_Controller {
 	function selectAll(){
 		$this->load->model('tf_news_m');
 		$news=$this->tf_news_m->news_select_all();
-		//var_dump($news);
 		return $news;
 	}
 }
